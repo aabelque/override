@@ -1,8 +1,8 @@
 int	main()
 {
-	char	buf_username[48];
+	char	buf_username[112];
+	char	password[48];
 	char	buf_password[112];
-	char	password[100];
 	int 	len;
 	int	num_read;
 	FILE	*pass;
