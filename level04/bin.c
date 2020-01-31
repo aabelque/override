@@ -1,6 +1,16 @@
+#include <sys/ptrace.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/prctl.h>
+#include <signal.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+
 int	main()
 {
-	int	stat_loc;
+	int	status;
 	char	buf[128];
 	int	z;
 	int	w;
@@ -8,7 +18,7 @@ int	main()
 	pid_t	child;
 
 	child = fork();
-	x = 0;
+	status = 0;
 	ptrace_ret = 0;
 	memset(buf, 0, 32);
 
@@ -21,10 +31,10 @@ int	main()
 	}
 
 	while (ptrace_ret != 11) {
-		wait(&x);
+		wait(&status);
 
-		z = x & 0x7f;
-		w = ((x & 0x7f) + 1) >> 1;
+		z = status & 0x7f;
+		w = ((status & 0x7f) + 1) >> 1;
 
 		if (z == 0 || w > 0) {
 			puts("child is exiting...");
