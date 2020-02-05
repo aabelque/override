@@ -46,7 +46,7 @@ int	store_number(unsigned int *zone)
 		return 1;
 	}
 
-	index = index << 2;
+	index *= 4;
 	zone[index] = number;
 
 	return 0;
@@ -174,11 +174,7 @@ int	main()
 		   printf(" Failed to do %s command\n", esp+0x1b8);
 	   }
 
-	   esp+0x1b8[0] = 0;
-	   esp+0x1b8[1] = 0;
-	   esp+0x1b8[2] = 0;
-	   esp+0x1b8[3] = 0;
-	   esp+0x1b8[4] = 0; // 4 bytes by 4 bytes it just resets the buffer
+	   bzero(0x1b8, 20);
    }
 
    return 0;
