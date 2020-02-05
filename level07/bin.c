@@ -39,23 +39,7 @@ int	store_number(unsigned int *zone)
 	printf(" Index: ");
 	index = get_unum();
 
-	/* <+62>:    mov    ecx,DWORD PTR [ebp-0xc] // index */
-	ecx = index;
-	/* <+65>:    mov    edx,0xaaaaaaab */
-	edx = 0xaaaaaaab;
-	/* <+70>:    mov    eax,ecx */
-	eax = ecx;
-	/* <+72>:    mul    edx */
-	mul edx eax; // stores lower bytes in eax
-	
-
-	/* <+74>:    shr    edx,1   */
-	/* <+76>:    mov    eax,edx */
-	/* <+78>:    add    eax,eax */
-	/* <+80>:    add    eax,edx */
-	/* <+82>:    mov    edx,ecx */
-	/* <+84>:    sub    edx,eax */
-	if (edx == 0 || number >> 0x18 == 183) {
+	if (index - ((index * 0xaaaaaaab) >> 1) * 3 == 0 || number >> 0x18 == 183) {
 		puts(" *** ERROR! ***");
 		puts("   This index is reserved for wil!");
 		puts(" *** ERROR! ***");
