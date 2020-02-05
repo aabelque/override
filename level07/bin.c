@@ -25,7 +25,7 @@ unsigned int	get_unum()
 	return v;
 }
 
-int	store_number(unsigned int *param)
+int	store_number(unsigned int *zone)
 {
 	unsigned int number;
 	unsigned int index;
@@ -40,10 +40,16 @@ int	store_number(unsigned int *param)
 	index = get_unum();
 
 	/* <+62>:    mov    ecx,DWORD PTR [ebp-0xc] // index */
+	ecx = index;
 	/* <+65>:    mov    edx,0xaaaaaaab */
+	edx = 0xaaaaaaab;
 	/* <+70>:    mov    eax,ecx */
+	eax = ecx;
 	/* <+72>:    mul    edx */
-	/* <+74>:    shr    edx,1 */
+	mul edx eax; // stores lower bytes in eax
+	
+
+	/* <+74>:    shr    edx,1   */
 	/* <+76>:    mov    eax,edx */
 	/* <+78>:    add    eax,eax */
 	/* <+80>:    add    eax,edx */
@@ -57,21 +63,20 @@ int	store_number(unsigned int *param)
 	}
 
 	index = index << 2;
-	index += param;
-	*(param + index) = number;
+	zone[index] = number;
 
 	return 0;
 }
 
-int	read_number(unsigned int *param)
+int	read_number(unsigned int *zone)
 {
-   unsigned int	value;
+   unsigned int	index;
 
-   value = 0;
+   index = 0;
 
    printf(" Index: ");
-   value = get_unum();
-   printf(" Number at data[%u] is %u\n", value, (value << 2) + *param);
+   index = get_unum();
+   printf(" Number at data[%u] is %u\n", index, *(zone + (index << 2)));
 
    return 0;
 }
@@ -99,7 +104,7 @@ int	main()
    <+88>:    mov    DWORD PTR [esp+0x1c4],0x0
    <+99>:    mov    DWORD PTR [esp+0x1c8],0x0
 
-   <+110>:   lea    ebx,[esp+0x24]
+   <+110>:   lea    ebx,[esp+0x24] // unsigned int zone[100]; // can store 400 bytes
    <+114>:   mov    eax,0x0
    <+119>:   mov    edx,0x64
    <+124>:   mov    edi,ebx
@@ -124,7 +129,8 @@ int	main()
    <+178>:   mov    DWORD PTR [esp+0x4],0x0
    <+186>:   mov    DWORD PTR [esp],eax
    <+189>:   call   0x80484f0 <memset@plt>
-   <+194>:   add    DWORD PTR [esp+0x1c],0x4
+
+   esp+0x1c += 4;
 
    <+199>:   mov    eax,DWORD PTR [esp+0x1c]
    <+203>:   mov    eax,DWORD PTR [eax]
@@ -168,11 +174,11 @@ int	main()
 
 	   if (memcmp(0x1b8, "store", 5) == 0) {
 
-		   esp+0x1b4 = store_number(esp+0x24);
+		   esp+0x1b4 = store_number(&zone);
 
 	   } else if (memcmp(0x1b8, "read", 4) == 0) {
 
-		   esp+0x1b4 = read_number(esp+0x24);
+		   esp+0x1b4 = read_number(&zone);
 
 	   } else if (memcmp(0x1b8, "quit", 4) == 0) {
 		   return 0;
