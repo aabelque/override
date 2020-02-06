@@ -1,3 +1,13 @@
+void	log_wrapper(FILE *stream, const char *toprint, char *str)
+{
+	char buf[264];
+
+	strcpy(buf, toprint);
+	snprintf(&buf[strlen(buf) - 1], 255 - strlen(buf) - 1, str);
+	buf[strcspn(buf, "\n")] = 0;
+	fprintf(stream, "LOG: %s\n", buf);
+}
+
 int	main(int ac, char **av)
 {
 	// find len
@@ -19,8 +29,7 @@ int	main(int ac, char **av)
 		exit(1);
 	}
 
-	// verify arg order
-	log_wrapper("Starting back up: ", logfile, av[1]);
+	log_wrapper(logfile, "Starting back up: ", av[1]);
 
 	argfile = fopen(av[1], "r");
 
@@ -44,9 +53,7 @@ int	main(int ac, char **av)
 		c = fgetc(argfile)
 	} while (c != 255);
 
-
-	// verify arg order
-	log_wrapper("Finished back up ", logfile, av[1]);
+	log_wrapper(logfile, "Finished back up ", av[1]);
 
 	fclose(argfile);
 	close(fd);
