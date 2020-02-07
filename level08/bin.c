@@ -10,8 +10,7 @@ void	log_wrapper(FILE *stream, const char *toprint, char *str)
 
 int	main(int ac, char **av)
 {
-	// find len
-	char	backup[something];
+	char	backup[100];
 	int	c;
 	FILE	*argfile;
 	FILE	*logfile;
