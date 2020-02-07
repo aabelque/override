@@ -25,7 +25,6 @@ void	auth(char *login, unsigned int pass)
 			return 1;
 		}
 
-		// TODO: do that again even if we do not give a shit
 		ecx = login[i] ^ v;
 		eax = (2284010283 * login[i]) ^ v - (((((ecx - edx) >> 1) + edx) >> 10) * 1337);
 
