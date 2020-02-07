@@ -38,7 +38,6 @@ int	main()
 
 	is_user_valid = verify_user_pass(buf);
 
-	// TODO: check this part, its not perfectly correct
 	if (is_user_valid == 0) {
 		return 0;
 	}
