@@ -1,5 +1,4 @@
 The binary waits for a number that will be substracted to a constant number, and if its less or equal to 21, it will call the `decrypt` funtion with the result of the substraction. It also contains a switch statement, which holds a list of values that can be constantly passed into the decrypt function. \
-If the function decrypts properly the string in 
 When disassembling, we see decrypt xor's a string in a loop we got from the following script (because it was written in hexadecimal in the assembly code so we had to decode it):
 ```python
 import struct
